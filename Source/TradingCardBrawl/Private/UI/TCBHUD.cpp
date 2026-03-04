@@ -4,6 +4,10 @@
 #include "Components/HorizontalBox.h"
 #include "Components/TextBlock.h"
 #include "UI/CardWidget.h"
+#include "UI/TCBAudioManager.h"
+#include "UI/TutorialManager.h"
+
+#include "EngineUtils.h"
 
 void UTCBHUD::NativeConstruct()
 {
@@ -13,6 +17,35 @@ void UTCBHUD::NativeConstruct()
 	{
 		EndTurnButton->OnClicked.RemoveDynamic(this, &UTCBHUD::OnEndTurnClicked);
 		EndTurnButton->OnClicked.AddDynamic(this, &UTCBHUD::OnEndTurnClicked);
+	}
+
+	if (TutorialPromptText)
+	{
+		TutorialPromptText->SetVisibility(ESlateVisibility::Collapsed);
+	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	for (TActorIterator<AActor> It(World); It; ++It)
+	{
+		if (!TutorialManager)
+		{
+			TutorialManager = It->FindComponentByClass<UTutorialManager>();
+		}
+
+		if (!AudioManager)
+		{
+			AudioManager = It->FindComponentByClass<UTCBAudioManager>();
+		}
+
+		if (TutorialManager && AudioManager)
+		{
+			break;
+		}
 	}
 }
 
@@ -59,6 +92,41 @@ void UTCBHUD::ClearHand()
 	if (HandContainer)
 	{
 		HandContainer->ClearChildren();
+	}
+}
+
+void UTCBHUD::ShowTutorialPrompt(const FString& Text)
+{
+	if (!TutorialPromptText)
+	{
+		return;
+	}
+
+	TutorialPromptText->SetText(FText::FromString(Text));
+	TutorialPromptText->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UTCBHUD::HideTutorialPrompt()
+{
+	if (TutorialPromptText)
+	{
+		TutorialPromptText->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+void UTCBHUD::OnCardPlayedSound()
+{
+	if (AudioManager)
+	{
+		AudioManager->PlaySound(ETCBSoundEvent::CardPlayed);
+	}
+}
+
+void UTCBHUD::OnAttackSound()
+{
+	if (AudioManager)
+	{
+		AudioManager->PlaySound(ETCBSoundEvent::CreatureAttack);
 	}
 }
 
