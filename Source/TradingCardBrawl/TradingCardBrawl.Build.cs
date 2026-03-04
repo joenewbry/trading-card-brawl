@@ -13,6 +13,8 @@ public class TradingCardBrawl : ModuleRules
 			"Core",
 			"CoreUObject",
 			"Engine",
+			"AIModule",
+			"HTTP",
 			"InputCore",
 			"UMG",
 			"Slate",
