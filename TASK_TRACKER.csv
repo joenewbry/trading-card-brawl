@@ -1,0 +1,11 @@
+Task ID,Title,Description,Assigned To,Status,Priority,Due Date,Notes
+1,Implement Core Game Loop,"Draw → Play → Fight → Win loop. Every turn, draw one card. Play one card to attack, defend, or cast a spell. Win by reducing opponent's HP to zero or making them run out of cards to draw.",,Not Started,High,2026-03-15,
+2,Design Hero Classes,"Design six unique hero classes: Necromancer, Warrior, Rogue, Druid, Engineer, Ranger. Each with five unique cards (no duplicates, no filler).",,Not Started,High,2026-03-15,
+3,Implement Mana System,"Five mana types: Shadow, Steel, Life, Wind, Earth. Each card has one mana type. Mana refills one of each type every turn. No random draws, no mana screw.",,Not Started,High,2026-03-15,
+4,Implement Win/Loss Conditions,"Win: reduce opponent's HP to 0 OR make them draw from empty deck. Lose: your HP hits 0 OR you draw from empty deck.",,Not Started,High,2026-03-15,
+5,Create Tutorial Structure,"Five-step tutorial: 1) Draw, 2) Mana, 3) Fight, 4) Deck, 5) Win. Each step ends with a card gift. No buttons, no menus.",,Not Started,High,2026-03-15,
+6,Implement AI Opponent,"AI plays predictably at first (safe, kind). After 5 wins, learns to block, save big cards, play smart. Never cheats, never has more cards. Gives new card after defeat.",,Not Started,High,2026-03-15,
+7,Design Card Progression,"Earn one new card after every match (not by grinding or luck). Cards are gifts from the game, representing growth.",,Not Started,High,2026-03-15,
+8,Implement Combat System,"Visual combat: cards strike, health bars drop, creatures rise from grave. No hidden numbers. Everything visible and intuitive.",,Not Started,High,2026-03-15,
+9,Implement Card Reward System,"Give one new card as a gift after each tutorial step and after every victory. The card is a symbol of player growth.",,Not Started,High,2026-03-15,
+10,Implement Deck Management,"No random card draws. Mana refills predictably. Players always have the tools they need but never all at once. Requires planning and flow.",,Not Started,High,2026-03-15,

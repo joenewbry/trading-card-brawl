@@ -1,0 +1,29 @@
+{
+  "Name": "TradingCardBrawl",
+  "Description": "Endless Modular TCG: Trading Card Brawl",
+  "EngineAssociation": "5.3",
+  "Category": "",
+  "CreatedBy": "",
+  "Plugins": [
+    {
+      "Name": "WebBrowserWidget",
+      "Enabled": true
+    },
+    {
+      "Name": "OnlineSubsystem",
+      "Enabled": true
+    },
+    {
+      "Name": "OnlineSubsystemNull",
+      "Enabled": true
+    },
+    {
+      "Name": "UMG",
+      "Enabled": true
+    },
+    {
+      "Name": "Niagara",
+      "Enabled": true
+    }
+  ]
+}
