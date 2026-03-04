@@ -1,0 +1,57 @@
+name: Card Schema Validation
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for index.json
+        run: |
+          if [ ! -f "Content/Cards/index.json" ]; then
+            echo "❌ Content/Cards/index.json not found"
+            exit 1
+          fi
+
+      - name: Validate card schema
+        run: |
+          python3 << 'EOF'
+import json
+import sys
+
+required_fields = {'id', 'name', 'type', 'rarity', 'mana_type', 'cost', 'class'}
+
+try:
+    with open('Content/Cards/index.json', 'r') as f:
+        data = json.load(f)
+except json.JSONDecodeError as e:
+    print(f"❌ JSON decode error: {e}")
+    sys.exit(1)
+
+if not isinstance(data, list):
+    print("❌ Card database is not an array")
+    sys.exit(1)
+
+missing = []
+for i, card in enumerate(data):
+    if not isinstance(card, dict):
+        print(f"❌ Card #{i} is not an object")
+        sys.exit(1)
+    missing_fields = required_fields - set(card.keys())
+    if missing_fields:
+        missing.append(f"Card #{i} ({card.get('name', 'unknown')}) missing: {', '.join(missing_fields)}")
+
+if missing:
+    print("❌ Missing required fields:")
+    for m in missing:
+        print(f"  - {m}")
+    sys.exit(1)
+
+print("✅ All cards have required fields")
+EOF

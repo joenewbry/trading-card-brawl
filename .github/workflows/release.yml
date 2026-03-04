@@ -1,0 +1,54 @@
+name: Release
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: get-tag
+        run: |
+          tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
+      - name: Generate version
+        id: version
+        run: |
+          date_str=$(date +%Y.%m.%d)
+          run_num=${GITHUB_RUN_NUMBER:-1}
+          version="v${date_str}.${run_num}"
+          echo "version=${version}" >> $GITHUB_OUTPUT
+
+      - name: Create changelog
+        id: changelog
+        run: |
+          git log --pretty=format:"%h - %s (%an)" --no-merges ${{ steps.get-tag.outputs.tag }}..HEAD > changelog.txt
+          echo "changelog=$(cat changelog.txt)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: ${{ steps.version.outputs.version }}
+          body: |
+            ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+
+      - name: Upload dist/ assets (if exists)
+        if: "github.event_name == 'push' && github.ref == 'refs/heads/main' && success() && file_exists('dist/')"
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: ./dist/*
+          asset_name: ${{ github.event.repository.name }}-${{ steps.version.outputs.version }}-${{ github.sha }}.zip
+          asset_content_type: application/zip

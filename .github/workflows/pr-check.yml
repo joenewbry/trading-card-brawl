@@ -1,0 +1,52 @@
+name: PR Check
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate JSON
+        run: |
+          python3 -m json.tool Content/Cards/index.json > /dev/null
+          if [ $? -ne 0 ]; then
+            echo "❌ JSON validation failed"
+            exit 1
+          fi
+          echo "✅ JSON validation passed"
+
+      - name: Check for required files
+        run: |
+          required_files=("GDD.md" "TECH_ARCH.md" "TradingCardBrawl.uproject")
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Required file missing: $file"
+              exit 1
+            fi
+          done
+          echo "✅ All required files present"
+
+      - name: Lint C++ headers for #pragma once
+        run: |
+          find Source/ -name "*.h" -print0 | while IFS= read -r -d '' file; do
+            if ! grep -q "^#pragma once" "$file"; then
+              echo "❌ Missing #pragma once in: $file"
+              exit 1
+            fi
+          done
+          echo "✅ All .h files have #pragma once"
+
+      - name: Post PR comment with results
+        uses: thollander/actions-comment-pr@v2.2.1
+        with:
+          message: |
+            ## ✅ PR Check Results
+            - JSON: ✅ Valid
+            - Required files: ✅ Present
+            - C++ headers: ✅ #pragma once present
+            
+            *This check was run automatically on PR submission.*
