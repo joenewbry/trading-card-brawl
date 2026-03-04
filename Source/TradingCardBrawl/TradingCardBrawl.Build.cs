@@ -18,7 +18,9 @@ public class TradingCardBrawl : ModuleRules
 			"Slate",
 			"SlateCore",
 			"OnlineSubsystem",
-			"OnlineSubsystemUtils"
+			"OnlineSubsystemUtils",
+			"Json",
+			"JsonUtilities"
 		});
 	}
 }
