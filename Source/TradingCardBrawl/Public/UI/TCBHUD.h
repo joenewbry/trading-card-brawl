@@ -7,6 +7,8 @@
 class UButton;
 class UHorizontalBox;
 class UTextBlock;
+class UTCBAudioManager;
+class UTutorialManager;
 class UVerticalBox;
 struct FCardData;
 
@@ -37,6 +39,15 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* EndTurnButton = nullptr;
 
+	UPROPERTY(meta = (BindWidgetOptional))
+	UTextBlock* TutorialPromptText = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TCB|HUD")
+	UTutorialManager* TutorialManager = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TCB|HUD")
+	UTCBAudioManager* AudioManager = nullptr;
+
 	UFUNCTION(BlueprintCallable, Category = "TCB|HUD")
 	void UpdateHealth(int32 PlayerHP, int32 OpponentHP);
 
@@ -48,6 +59,18 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "TCB|HUD")
 	void ClearHand();
+
+	UFUNCTION(BlueprintCallable, Category = "TCB|HUD")
+	void ShowTutorialPrompt(const FString& Text);
+
+	UFUNCTION(BlueprintCallable, Category = "TCB|HUD")
+	void HideTutorialPrompt();
+
+	UFUNCTION(BlueprintCallable, Category = "TCB|HUD")
+	void OnCardPlayedSound();
+
+	UFUNCTION(BlueprintCallable, Category = "TCB|HUD")
+	void OnAttackSound();
 
 	UFUNCTION()
 	void OnEndTurnClicked();
