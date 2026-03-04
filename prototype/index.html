@@ -1,82 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Card Brawl</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Card Brawl - Prototype</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <!-- Player 2 (AI) HP Bar -->
-        <div id="player2-hp-bar" class="hp-bar">
-            <div class="hp-text">AI: 30/30</div>
-            <div class="hp-fill" style="width: 100%;"></div>
+  <div id="app" class="app">
+    <section id="class-select-screen" class="screen active">
+      <div class="panel class-panel">
+        <h1>Trading Card Brawl</h1>
+        <p class="subtitle">Choose your class</p>
+        <div id="class-list" class="class-list"></div>
+      </div>
+    </section>
+
+    <section id="game-screen" class="screen">
+      <header class="top-bar panel">
+        <div class="hp-group">
+          <div class="player-label">AI</div>
+          <div class="hp-wrap">
+            <div class="hp-fill" id="ai-hp-fill"></div>
+          </div>
+          <div class="hp-text" id="ai-hp-text">30 / 30</div>
         </div>
 
-        <!-- Player 2 Hand (Face Down) -->
-        <div id="player2-hand" class="hand">
-            <div class="hand-title">AI Hand (5 cards)</div>
-            <div class="face-down-cards">
-                <!-- 5 face-down cards will be rendered by JS -->
-            </div>
+        <div class="center-status">
+          <div id="turn-indicator" class="turn-indicator your-turn">YOUR TURN</div>
+          <div class="mana" id="mana-counter">Mana: 3/3</div>
+          <div id="class-vs" class="class-vs">Warrior vs Ranger</div>
         </div>
 
-        <!-- Board Area -->
-        <div id="board" class="board">
-            <!-- Player 2's creatures will appear here -->
-            <div id="player2-board" class="board-zone"></div>
-            
-            <!-- Center area for effects -->
-            <div id="center-effect" class="center-effect"></div>
-            
-            <!-- Player 1's creatures will appear here -->
-            <div id="player1-board" class="board-zone"></div>
+        <div class="hp-group">
+          <div class="player-label">Player</div>
+          <div class="hp-wrap">
+            <div class="hp-fill" id="player-hp-fill"></div>
+          </div>
+          <div class="hp-text" id="player-hp-text">30 / 30</div>
         </div>
+      </header>
 
-        <!-- Mana Display -->
-        <div id="mana-display" class="mana-display">
-            <div class="mana-type" id="mana-shadow">Shadow: <span>1</span>/10</div>
-            <div class="mana-type" id="mana-steel">Steel: <span>1</span>/10</div>
-            <div class="mana-type" id="mana-life">Life: <span>1</span>/10</div>
-            <div class="mana-type" id="mana-wind">Wind: <span>1</span>/10</div>
-            <div class="mana-type" id="mana-earth">Earth: <span>1</span>/10</div>
-        </div>
+      <main class="battlefield">
+        <section class="board panel">
+          <h2>AI Board</h2>
+          <div id="ai-board" class="board-row"></div>
+        </section>
 
-        <!-- Player 1 (Human) Hand -->
-        <div id="player1-hand" class="hand">
-            <div class="hand-title">Your Hand</div>
-            <div class="cards-container">
-                <!-- Cards will be rendered by JS -->
-            </div>
-        </div>
+        <section class="board panel">
+          <h2>Your Board</h2>
+          <div id="player-board" class="board-row"></div>
+        </section>
+      </main>
 
-        <!-- Player 1 HP Bar -->
-        <div id="player1-hp-bar" class="hp-bar">
-            <div class="hp-text">You: 30/30</div>
-            <div class="hp-fill" style="width: 100%;"></div>
-        </div>
+      <section class="controls panel">
+        <button id="play-card-btn" class="action-btn" type="button">Play Card</button>
+        <button id="attack-btn" class="action-btn" type="button">Attack</button>
+        <button id="end-turn-btn" class="action-btn" type="button">End Turn</button>
+      </section>
 
-        <!-- UI Controls -->
-        <div id="ui-controls" class="ui-controls">
-            <div id="turn-indicator" class="turn-indicator">Your Turn</div>
-            <button id="end-turn-btn" disabled>End Turn</button>
-            <button id="play-card-btn" disabled>Play Card</button>
-            <button id="attack-btn" disabled>Attack</button>
-        </div>
+      <section class="hand panel">
+        <h2>Your Hand</h2>
+        <div id="player-hand" class="hand-row"></div>
+      </section>
+    </section>
 
-        <!-- Win/Lose Screen -->
-        <div id="win-screen" class="win-screen hidden">
-            <h2>You Win!</h2>
-            <button id="play-again-btn">Play Again</button>
-        </div>
+    <section id="game-over-screen" class="screen">
+      <div class="panel end-panel">
+        <h2 id="game-over-title">Victory</h2>
+        <p id="game-over-text">You defeated the AI.</p>
+        <button id="play-again-btn" class="action-btn" type="button">Play Again</button>
+      </div>
+    </section>
+  </div>
 
-        <div id="lose-screen" class="lose-screen hidden">
-            <h2>You Lost!</h2>
-            <button id="play-again-btn">Play Again</button>
-        </div>
-    </div>
-
-    <script src="game.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>

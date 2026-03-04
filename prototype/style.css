@@ -1,0 +1,273 @@
+:root {
+  --bg-1: #0f1027;
+  --bg-2: #24133f;
+  --panel: rgba(8, 11, 28, 0.75);
+  --panel-border: #7f5d1e;
+  --gold: #f1c86b;
+  --hp-red: #a1142a;
+  --hp-red-bright: #e4374f;
+  --text: #f3e9d0;
+  --muted: #c8ba95;
+  --turn-green: #40c970;
+  --turn-gray: #9ca3af;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at 25% 20%, #2d1d4d 0%, var(--bg-1) 45%, #060710 100%);
+}
+
+.app {
+  min-height: 100vh;
+  padding: 12px;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.panel {
+  background: var(--panel);
+  border: 2px solid var(--panel-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+}
+
+.class-panel,
+.end-panel {
+  max-width: 900px;
+  margin: 8vh auto;
+  text-align: center;
+  padding: 24px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.class-list {
+  margin-top: 20px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.class-btn,
+.action-btn {
+  border: 2px solid #9b7c35;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #302753 0%, #1a1536 100%);
+  color: var(--text);
+  min-height: 48px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.class-btn:active,
+.action-btn:active {
+  transform: translateY(1px);
+}
+
+.top-bar {
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr 1.1fr 1fr;
+  align-items: center;
+}
+
+.hp-group {
+  display: grid;
+  gap: 6px;
+}
+
+.player-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.hp-wrap {
+  width: 100%;
+  height: 16px;
+  border-radius: 999px;
+  background: #3c0c16;
+  border: 1px solid #5f1a28;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--hp-red), var(--hp-red-bright));
+  transition: width 0.2s ease;
+}
+
+.hp-text {
+  font-weight: 700;
+}
+
+.center-status {
+  text-align: center;
+  display: grid;
+  gap: 4px;
+}
+
+.turn-indicator {
+  font-weight: 800;
+}
+
+.your-turn {
+  color: var(--turn-green);
+}
+
+.ai-turn {
+  color: var(--turn-gray);
+}
+
+.class-vs {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.battlefield {
+  margin-top: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.board {
+  padding: 10px;
+}
+
+.board h2,
+.hand h2 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.board-row,
+.hand-row {
+  min-height: 150px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  overflow-x: auto;
+  padding: 4px;
+}
+
+.controls {
+  margin-top: 12px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hand {
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.card {
+  width: 132px;
+  min-height: 148px;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 8px;
+  background: linear-gradient(180deg, #2f2754 0%, #18132e 100%);
+  display: grid;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card.small {
+  width: 118px;
+  min-height: 130px;
+}
+
+.card-name {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.card-line {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.card-stats {
+  font-weight: 700;
+}
+
+.card.selected {
+  box-shadow: 0 0 18px rgba(241, 200, 107, 0.9);
+  border-color: #ffe9ae;
+}
+
+.card.exhausted {
+  opacity: 0.6;
+}
+
+.action-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.end-panel {
+  max-width: 540px;
+}
+
+#game-over-title {
+  font-size: 2rem;
+}
+
+#game-over-text {
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+#play-again-btn {
+  margin-top: 18px;
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .top-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .card,
+  .card.small,
+  .class-btn,
+  .action-btn {
+    min-height: 48px;
+  }
+
+  .card {
+    width: 120px;
+    min-height: 152px;
+  }
+}
