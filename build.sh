@@ -1,71 +1,48 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
 
-PROJECT_NAME="TradingCardBrawl"
-UPROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/${PROJECT_NAME}.uproject"
+UE_PATH="/Users/Shared/Epic Games/UE_5.7"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_FILE="$PROJECT_DIR/TradingCardBrawl.uproject"
+UBT="$UE_PATH/Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool"
+EDITOR="$UE_PATH/Engine/Binaries/Mac/UnrealEditor"
 
-UE_ROOT_CANDIDATES=(
-  "/Epic/UE_5.3"
-  "$HOME/UnrealEngine"
-  "/opt/UnrealEngine"
-)
+echo "=============================="
+echo " Trading Card Brawl Builder"
+echo "=============================="
+echo "Engine: $UE_PATH"
+echo "Project: $PROJECT_FILE"
+echo ""
 
-find_ue_root() {
-  for path in "${UE_ROOT_CANDIDATES[@]}"; do
-    if [[ -d "$path" ]]; then
-      echo "$path"
-      return 0
-    fi
-  done
+if [ ! -d "$UE_PATH" ]; then
+  echo "ERROR: UE5.7 not found at $UE_PATH"
+  echo "Download from: https://www.unrealengine.com/en-US/download"
+  exit 1
+fi
 
-  return 1
-}
+ACTION="${1:-open}"
 
-run_webgl_build() {
-  local ue_root="$1"
-  local uat_script=""
-
-  if [[ -f "$ue_root/Engine/Build/BatchFiles/RunUAT.sh" ]]; then
-    uat_script="$ue_root/Engine/Build/BatchFiles/RunUAT.sh"
-  elif [[ -f "$ue_root/Engine/Build/BatchFiles/RunUAT.bat" ]]; then
-    uat_script="$ue_root/Engine/Build/BatchFiles/RunUAT.bat"
-  fi
-
-  if [[ -z "$uat_script" ]]; then
-    echo "Found Unreal Engine at '$ue_root' but RunUAT was not found."
-    echo "Please verify your UE5.3 installation and try again."
-    exit 1
-  fi
-
-  echo "Using Unreal Engine at: $ue_root"
-  echo "Starting WebGL build for ${PROJECT_NAME}..."
-
-  if [[ "$uat_script" == *.sh ]]; then
-    "$uat_script" BuildCookRun \
-      -project="$UPROJECT_PATH" \
-      -platform=HTML5 \
-      -clientconfig=Shipping \
-      -build -cook -stage -pak -archive
-  else
-    "$uat_script" BuildCookRun \
-      -project="$UPROJECT_PATH" \
-      -platform=HTML5 \
-      -clientconfig=Shipping \
-      -build -cook -stage -pak -archive
-  fi
-}
-
-main() {
-  if ue_root="$(find_ue_root)"; then
-    run_webgl_build "$ue_root"
-  else
-    echo "Unreal Engine 5.3 was not found in these locations:"
-    for path in "${UE_ROOT_CANDIDATES[@]}"; do
-      echo "  - $path"
-    done
-    echo "Download UE5.3 from: https://www.unrealengine.com/en-US/download"
-    exit 1
-  fi
-}
-
-main "$@"
+case "$ACTION" in
+  open)
+    echo "Opening project in UE5.7 editor..."
+    open "$PROJECT_FILE"
+    ;;
+  build)
+    echo "Building TradingCardBrawl (Mac, Development)..."
+    "$UBT" TradingCardBrawl Mac Development -Project="$PROJECT_FILE" -WaitMutex
+    ;;
+  cook)
+    echo "Cooking content..."
+    "$EDITOR" "$PROJECT_FILE" -run=Cook -TargetPlatform=HTML5 -Unversioned -fileopenlog
+    ;;
+  regen)
+    echo "Regenerating Xcode project files..."
+    "$UE_PATH/Engine/Build/BatchFiles/Mac/GenerateProjectFiles.sh" -project="$PROJECT_FILE" -game -mac
+    ;;
+  *)
+    echo "Usage: ./build.sh [open|build|cook|regen]"
+    echo "  open  — Open project in UE5.7 editor (default)"
+    echo "  build — Compile C++ source"
+    echo "  cook  — Cook content for HTML5/WebGL"
+    echo "  regen — Regenerate Xcode project files"
+    ;;
+esac

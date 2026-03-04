@@ -1,9 +1,9 @@
 {
   "Name": "TradingCardBrawl",
   "Description": "Endless Modular TCG: Trading Card Brawl",
-  "EngineAssociation": "5.3",
-  "Category": "",
-  "CreatedBy": "",
+  "EngineAssociation": "5.7",
+  "Category": "Games",
+  "CreatedBy": "OpenArcade",
   "Plugins": [
     {
       "Name": "WebBrowserWidget",
@@ -23,6 +23,14 @@
     },
     {
       "Name": "Niagara",
+      "Enabled": true
+    },
+    {
+      "Name": "EnhancedInput",
+      "Enabled": true
+    },
+    {
+      "Name": "CommonUI",
       "Enabled": true
     }
   ]
