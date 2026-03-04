@@ -20,6 +20,7 @@ public:
 	int32 TotalMatches;
 	FString SelectedHeroClass;
 	int32 BattleTokens;
+	bool bTutorialCompleted = false;
 	FString LastSyncTimestamp;
 	FString SaveVersion = "1.0.0";
 };
